@@ -11,7 +11,7 @@ If distance between vectors will be smaller thus I consider that they are clones
 
 ## Requirements
 On Ubuntu:
-  * [Python3] (3.5 < version < 3.8). To check the version:
+  * Python3 (3.5 < version < 3.8). To check the version:
 > python3 --version
   * TensorFlow - version 2.0.0-beta1 ([install](https://www.tensorflow.org/install/install_linux)).
   To check TensorFlow version:
@@ -31,7 +31,16 @@ pip3 install tensorflow==2.0.0-beta1
 git clone https://github.com/Qvery-mm/JB-application
 ```
 
-### Step 2: install BigCloneBench
+### Step 2: Downloading a trained model (1.4 GB)
+Authors of tech-srl/code2vec already trained a model for 8 epochs on their own data.
+This model can be downloaded [here](https://s3.amazonaws.com/code2vec/model/java14m_model.tar.gz) or using:
+```
+wget https://s3.amazonaws.com/code2vec/model/java14m_model.tar.gz
+tar -xvzf java14m_model.tar.gz
+```
+Extract the contents into the JB-application directory
+
+### Step 3: install BigCloneBench
 ------------------------------------------------------------------------------------------
 
 ```
@@ -39,7 +48,7 @@ git clone https://github.com/jeffsvajlenko/BigCloneEval
 cd BigCloneEval
 ```
 
-Download the latest version of IJaDataset (as specially packaged for BigCloneEval) from
+#### Download the latest version of IJaDataset (as specially packaged for BigCloneEval) from
 the following webpage:
 
 IJaDataset, BigCloneEval Version: https://www.dropbox.com/s/xdio16u396imz29/IJaDataset_BCEvalVersion.tar.gz?dl=0
@@ -50,23 +59,23 @@ directory of the BigCloneEval distribution.
 This should create a directory 'ijadataset/bcb_reduced/' which contains one sub-directory
 per functionality in BigCloneBench.
 
-Then get the latest version of BigCloneBench database:
+#### Get the latest version of BigCloneBench database:
 
 Downloaded the latest version of BigCloneBench (as specially packaged for BigCloneEval) 
 from the following webpage:
 
-http://jeff.svajlenko.com/bigcloneeval
+https://www.dropbox.com/s/z2k8r78l63r68os/BigCloneBench_BCEvalVersion.tar.gz?dl=0
 
 Extract the contents of BigCloneBench (BigCloneBench_BCEvalVersion.tar.gz) into the
 'bigclonebenchdb' directory of the BigCloneEval distribution.
 
-After that run make from the root directory of BigCloneEval
+After that run ```make``` from the root directory of BigCloneEval
 
 ------------------------------------------------------------------------------------------
 Step 4: Initialize the tools 
 ------------------------------------------------------------------------------------------
 
-consider you are in the BigCloneEval directory
+Consider you are in the BigCloneEval directory
 
 Go to the commands/ directory and execute the 'init' script.  This will initialize the tools
 database.
@@ -76,35 +85,35 @@ cd commands
 ```
 Register tool
 
+```
+./registerTool -n "code2vec" -d "60 threshold"
+```
 
-#### Step 4: Downloading a trained model (1.4 GB)
-Authors of tech-srl/code2vec already trained a model for 8 epochs on their own data.
-This model can be downloaded [here](https://s3.amazonaws.com/code2vec/model/java14m_model.tar.gz) or using:
-```
-wget https://s3.amazonaws.com/code2vec/model/java14m_model.tar.gz
-tar -xvzf java14m_model.tar.gz
-```
-You mush put it into JB-application directory. 
+
 
 ### Step 5: Evaluating a trained model
-Suppose that iteration #8 is our chosen model, run:
+Suppose that iteration #8 is our chosen model, run from JB-application directory:
 ```
 python3 code2vec.py --load models/java14_model/saved_model_iter8.release --predict --export_code_vectors
 ```
-While evaluating, a file named "Clones" is written with each pair of clones in the following format one per line:
+While evaluating, a file named "code2vec.clones" is written with each pair of clones in the following format one per line:
 ```
 <dirname1>,<filename1>,<line start 1>,<line end 1>,<dirname2>,<filename2>,<line start 2>,<line end 2>
 ```
 
-### Exporting the code vectors for the given code examples
-The flag `--export_code_vectors` allows to export the code vectors for the given examples. 
-
-
 ## import clones
+Go to the commands directory of BigCloneEval distribution and run: 
+```
+./importClones -t 1 -c ../../JB-application/code2vec.clones
+```
+after importing run
+```
+./evaluateTool -t 1 -o code2vec.report
+```
+It will generate you report about your tool.
 
-#
-
-
+My model still evaluating.
+Precision and recall will appear here approximately in 1 day.
 
 ## Citation
 
@@ -114,25 +123,3 @@ The flag `--export_code_vectors` allows to export the code vectors for the given
 [Uri Alon](http://urialon.cswp.cs.technion.ac.il), [Meital Zilberstein](http://www.cs.technion.ac.il/~mbs/), [Omer Levy](https://levyomer.wordpress.com) and [Eran Yahav](http://www.cs.technion.ac.il/~yahave/),
 "code2vec: Learning Distributed Representations of Code", POPL'2019 [[PDF]](https://urialon.cswp.cs.technion.ac.il/wp-content/uploads/sites/83/2018/12/code2vec-popl19.pdf)
 
-```
-@article{alon2019code2vec,
- author = {Alon, Uri and Zilberstein, Meital and Levy, Omer and Yahav, Eran},
- title = {Code2Vec: Learning Distributed Representations of Code},
- journal = {Proc. ACM Program. Lang.},
- issue_date = {January 2019},
- volume = {3},
- number = {POPL},
- month = jan,
- year = {2019},
- issn = {2475-1421},
- pages = {40:1--40:29},
- articleno = {40},
- numpages = {29},
- url = {http://doi.acm.org/10.1145/3290353},
- doi = {10.1145/3290353},
- acmid = {3290353},
- publisher = {ACM},
- address = {New York, NY, USA},
- keywords = {Big Code, Distributed Representations, Machine Learning},
-}
-```
