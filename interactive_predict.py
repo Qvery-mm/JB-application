@@ -55,3 +55,24 @@ class InteractivePredictor:
                 if self.config.EXPORT_CODE_VECTORS:
                     print('Code vector:')
                     print(' '.join(map(str, raw_prediction.code_vector)))
+                    print(len(raw_prediction.code_vector))
+    
+    def getCodeVector(self, input_filename):
+        targetArray = []
+        try:
+            predict_lines, hash_to_string_dict = self.path_extractor.extract_paths(input_filename)
+        except ValueError as e:
+            print(e)
+            return
+        raw_prediction_results = self.model.predict(predict_lines)
+        method_prediction_results = common.parse_prediction_results(
+            raw_prediction_results, hash_to_string_dict,
+            self.model.vocabs.target_vocab.special_words, topk=SHOW_TOP_CONTEXTS)
+        for raw_prediction, method_prediction in zip(raw_prediction_results, method_prediction_results):
+            if self.config.EXPORT_CODE_VECTORS:
+                print('Original name:\t' + method_prediction.original_name)
+                #print(input_filename)
+                #print(' '.join(map(str, raw_prediction.code_vector)))
+                vector = raw_prediction.code_vector
+                targetArray.append((method_prediction.original_name, vector))
+        return targetArray

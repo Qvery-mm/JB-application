@@ -51,7 +51,7 @@ class Config:
         self.TOP_K_WORDS_CONSIDERED_DURING_PREDICTION = 10
         self.NUM_BATCHES_TO_LOG_PROGRESS = 100
         self.NUM_TRAIN_BATCHES_TO_EVALUATE = 1800
-        self.READER_NUM_PARALLEL_BATCHES = 6  # cpu cores [for tf.contrib.data.map_and_batch() in the reader]
+        self.READER_NUM_PARALLEL_BATCHES = 4  # cpu cores [for tf.contrib.data.map_and_batch() in the reader]
         self.SHUFFLE_BUFFER_SIZE = 10000
         self.CSV_BUFFER_SIZE = 100 * 1024 * 1024  # 100 MB
         self.MAX_TO_KEEP = 10
