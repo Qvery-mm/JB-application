@@ -70,7 +70,7 @@ class InteractivePredictor:
             self.model.vocabs.target_vocab.special_words, topk=SHOW_TOP_CONTEXTS)
         for raw_prediction, method_prediction in zip(raw_prediction_results, method_prediction_results):
             if self.config.EXPORT_CODE_VECTORS:
-                print('Original name:\t' + method_prediction.original_name)
+                #print('Original name:\t' + method_prediction.original_name)
                 #print(input_filename)
                 #print(' '.join(map(str, raw_prediction.code_vector)))
                 vector = raw_prediction.code_vector

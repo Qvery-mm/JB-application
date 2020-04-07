@@ -5,7 +5,8 @@ from model_base import Code2VecModelBase
 import numpy as np
 import os
 import parser
-
+import pickle
+import csv
 
 def load_model_dynamically(config: Config) -> Code2VecModelBase:
     assert config.DL_FRAMEWORK in {'tensorflow', 'keras'}
@@ -38,30 +39,53 @@ if __name__ == '__main__':
     if config.PREDICT:
         predictor = InteractivePredictor(config, model)
 
-        with open("code2vecClones", "w") as output:
-            maxn = 5
+        
+        knownSnippets = []
+        number = 0
+        for folder in range(44, 46):
+            print(folder)
             np.set_printoptions(linewidth=np.inf)
-            for root, dirs, files in os.walk('/home/aleksandr/Documents/JetBrains/BigCloneEval/ijadataset/bcb_reduced/2'):
+            for root, dirs, files in os.walk('../BigCloneEval/ijadataset/bcb_reduced/' + str(folder)):
                 for _file in files:
+                    number+=1
                     filename = root + "/" + _file   
-                    #print(filename)
                     targetArray = predictor.getCodeVector(filename)
                     previousStart = 0
-                    for method in targetArray:
-                        originalname, vec = method
-                        vec = np.array(vec)
-                        start, end = parser.findLines(filename, originalname, previousStart)
-                        previousStart = start
-                        print(originalname, start, end, _file, file=output) #TODO add vec to output
-                    #print(filename, vec)
-                    maxn -= 1
-                    if maxn <= 0:
-                        break
-		#predictor.predict()
-		#vec1 = np.array(predictor.getCodeVector("Input.java"))
-		#vec2 = np.array(predictor.getCodeVector("Input-second.java"))
-		#print(vec1)
-		#subs = vec1 - vec2
-		#print(subs)
-		#print(np.matmul(subs, subs))
+                    try:
+                        for method in targetArray:
+                            originalname, vec = method
+                            vec = np.array(vec)
+                            start, end = parser.findLines(filename, originalname, previousStart)
+                            previousStart = start
+                            _dir = root.split('/')[-1]
+                            knownSnippets.append((_dir, _file, start, end, vec))
+                    except Exception as e:
+                        print(e)
+                        print(_file)
+                    print(number)
+
+            with open("data" + str(folder) + ".csv", "w") as output:
+                writer = csv.writer(output, delimiter=' ')
+                writer.writerow([len(knownSnippets), len(knownSnippets[0][4])])
+                for i in knownSnippets:
+                    writer.writerow(i[0:4])
+                    writer.writerow(i[4])
+
+
+            print("csv for " + str(folder) + " folder uploaded")
+            #number = 0
+            #_size = len(knownSnippets)
+            #with open("Clones" + str(folder), "w") as output:
+                #for i in range(_size):
+                    #number += 1
+                    #print(number, "/", _size)
+                    #for j in range(i + 1, _size):
+                        #try:
+                            #subs = knownSnippets[i][4] - knownSnippets[j][4]
+                            #score = np.matmul(subs, subs)
+                            #if score < 60:
+                                #print(knownSnippets[i][0], ",", knownSnippets[i][1], ",", knownSnippets[i][2], ",", knownSnippets[i][3], ",",
+                                     #knownSnippets[j][0], ",", knownSnippets[j][1], ",", knownSnippets[j][2], ",", knownSnippets[j][3], sep='', file=output)
+                        #except Exception:
+                            #pass
     model.close_session()

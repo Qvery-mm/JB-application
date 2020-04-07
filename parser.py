@@ -20,7 +20,7 @@ def findLines(filename, _methodName, previousStart):
                 if not line[j-1] == ' ' or line[j-3] == ' ' or not ( line[j-2] in '_$]*>' or line[j-2].isalnum()):
                     continue
                 try:
-                    print(line[j - 6:j - 1])
+                    #print(line[j - 6:j - 1])
                     if(line[j - 6:j - 1] == 'class'):
                         continue
                 except Exception:
