@@ -99,6 +99,8 @@ Suppose that iteration #8 is our chosen model, run from JB-application directory
 ```
 python3 code2vec.py --load models/java14_model/saved_model_iter8.release --predict --export_code_vectors
 ```
+Code2vec model quite large (1.4Gb) so script may not work on a small machines.
+
 While evaluating, a number of files named "data<N>.csv" is written with each pair of clones in the following format:
 ```
 <total number of snippets> <dimension of code vector>
