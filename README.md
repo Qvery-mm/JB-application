@@ -75,7 +75,7 @@ Extract the contents of BigCloneBench (BigCloneBench_BCEvalVersion.tar.gz) into 
 After that run ```make``` from the root directory of BigCloneEval
 
 ------------------------------------------------------------------------------------------
-Step 4: Initialize the tools 
+### Step 4: Initialize the tools 
 ------------------------------------------------------------------------------------------
 
 Consider you are in the BigCloneEval directory
@@ -126,8 +126,9 @@ After that you'll see file named 'allClones'.
 It contain a large number of following lines:
 <dirname 1> <filename 1> <snippet line start 1> < snippet line end 1> <dirname 2> <filename 2> <snippet line start 2> < snippet line end 2>
 
+### Model estimation
 
-### import clones
+#### import clones
 Go to the commands directory of BigCloneEval distribution and run: 
 ```
 ./importClones -t 1 -c ../../JB-application/cpp/allClones
@@ -141,7 +142,7 @@ It will generate you report about your tool.
 
 Metrics of my model still unavilable since long time of calculations.
 
-## Citation
+# Citation
 
 [1] [code2vec: Learning Distributed Representations of Code](https://urialon.cswp.cs.technion.ac.il/wp-content/uploads/sites/83/2018/12/code2vec-popl19.pdf)
 [2] github.com/tech-srl/code2vec
