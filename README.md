@@ -75,7 +75,7 @@ Extract the contents of BigCloneBench (BigCloneBench_BCEvalVersion.tar.gz) into 
 After that run ```make``` from the root directory of BigCloneEval
 
 ------------------------------------------------------------------------------------------
-Step 4: Initialize the tools 
+### Step 4: Initialize the tools 
 ------------------------------------------------------------------------------------------
 
 Consider you are in the BigCloneEval directory
@@ -103,15 +103,35 @@ While evaluating, a number of files named "data<N>.csv" is written with each pai
 ```
 <total number of snippets> <dimension of code vector>
 ```
-Then 'rows' times:
+Then 'rows' times following pattern will appear:
 ```
-<dirname1> <filename1> <line start 1>,<line end 1>,<dirname2>,<filename2>,<line start 2>,<line end 2>
+<dirname> <filename> <snippet line start> < snippet line end>
+<384 dimensional vector>
+```
+Due to large size of dataset it may take a long time.
+ 
+After complete you'll see 44 csv files in JB-application directory. (data2.csv - data45.csv)
+
+Now you may compare cnippets by their vector representations:
+```
+cd cpp
+g++ findClones.cpp -o findClones
+./findClones
 ```
 
-## import clones
+It may take a while.
+If distance between two vectors smaller than 7.74, then I decide that ollowing snippets are clones.
+
+After that you'll see file named 'allClones'.
+It contain a large number of following lines:
+<dirname 1> <filename 1> <snippet line start 1> < snippet line end 1> <dirname 2> <filename 2> <snippet line start 2> < snippet line end 2>
+
+### Model estimation
+
+#### import clones
 Go to the commands directory of BigCloneEval distribution and run: 
 ```
-./importClones -t 1 -c ../../JB-application/code2vec.clones
+./importClones -t 1 -c ../../JB-application/cpp/allClones
 ```
 after importing run
 ```
@@ -119,10 +139,10 @@ after importing run
 ```
 It will generate you report about your tool.
 
-My model still evaluating.
-Precision and recall will appear here approximately in 1 day.
 
-## Citation
+Metrics of my model still unavilable since long time of calculations.
+
+# Citation
 
 [1] [code2vec: Learning Distributed Representations of Code](https://urialon.cswp.cs.technion.ac.il/wp-content/uploads/sites/83/2018/12/code2vec-popl19.pdf)
 [2] github.com/tech-srl/code2vec
