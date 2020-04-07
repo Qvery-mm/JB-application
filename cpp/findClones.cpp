@@ -28,7 +28,7 @@ int main()
 {
     freopen("allClones", "w", stdout);
     int rows, cols=384;
-    for(int folder_ = 44; folder_ <= 44; folder_++)
+    for(int folder_ = 2; folder_ <= 44; folder_++)
     {
         string ss = "../data" + to_string(folder_) + ".csv";
         char cc[15];

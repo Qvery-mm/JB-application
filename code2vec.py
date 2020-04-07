@@ -42,7 +42,7 @@ if __name__ == '__main__':
         
         knownSnippets = []
         number = 0
-        for folder in range(44, 46):
+        for folder in range(2, 46):
             print(folder)
             np.set_printoptions(linewidth=np.inf)
             for root, dirs, files in os.walk('../BigCloneEval/ijadataset/bcb_reduced/' + str(folder)):
