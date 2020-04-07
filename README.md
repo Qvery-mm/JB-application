@@ -5,7 +5,7 @@ In this work I used code2vec model described in [1] and implemented in [2].
 
 The main idea of the vector representation is that code snippets with the same meaning will mapped to simular vectors (respect Euclidean metric).
 
-Then I specified threshold (in my case I hardcoded it on 60).
+Then I specified threshold (in my case it is 7.75).
 If distance between vectors will be smaller thus I consider that they are clones.
 
 
@@ -122,7 +122,7 @@ g++ findClones.cpp -o findClones
 ```
 
 It may take a while.
-If distance between two vectors smaller than 7.74, then I decide that ollowing snippets are clones.
+If square distance between two vectors smaller than 60 (7.75^2), then I decide that ollowing snippets are clones.
 
 After that you'll see file named 'allClones'.
 It contain a large number of following lines:
