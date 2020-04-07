@@ -28,6 +28,8 @@ pip3 install tensorflow==2.0.0-beta1
 
 ### Step 1: Cloning this repository
 ```
+go to your working directory. Let's call it $root$
+cd $root$
 git clone https://github.com/Qvery-mm/JB-application
 ```
 
@@ -44,6 +46,7 @@ Extract the contents into the JB-application directory
 ------------------------------------------------------------------------------------------
 
 ```
+cd $root$
 git clone https://github.com/jeffsvajlenko/BigCloneEval
 cd BigCloneEval
 ```
@@ -96,9 +99,13 @@ Suppose that iteration #8 is our chosen model, run from JB-application directory
 ```
 python3 code2vec.py --load models/java14_model/saved_model_iter8.release --predict --export_code_vectors
 ```
-While evaluating, a file named "code2vec.clones" is written with each pair of clones in the following format one per line:
+While evaluating, a number of files named "data<N>.csv" is written with each pair of clones in the following format:
 ```
-<dirname1>,<filename1>,<line start 1>,<line end 1>,<dirname2>,<filename2>,<line start 2>,<line end 2>
+<total number of snippets> <dimension of code vector>
+```
+Then 'rows' times:
+```
+<dirname1> <filename1> <line start 1>,<line end 1>,<dirname2>,<filename2>,<line start 2>,<line end 2>
 ```
 
 ## import clones
