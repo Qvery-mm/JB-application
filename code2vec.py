@@ -38,12 +38,10 @@ if __name__ == '__main__':
                 str(eval_results).replace('topk', 'top{}'.format(config.TOP_K_WORDS_CONSIDERED_DURING_PREDICTION)))
     if config.PREDICT:
         predictor = InteractivePredictor(config, model)
-
-        
-        knownSnippets = []
         number = 0
         for folder in range(2, 46):
-            print(folder)
+            knownSnippets = []
+            print("folder", folder)
             np.set_printoptions(linewidth=np.inf)
             for root, dirs, files in os.walk('../BigCloneEval/ijadataset/bcb_reduced/' + str(folder)):
                 for _file in files:
