@@ -40,6 +40,8 @@ if __name__ == '__main__':
         predictor = InteractivePredictor(config, model)
         number = 0
         for folder in range(2, 46):
+            if folder == 16:
+                continue
             knownSnippets = []
             print("folder", folder)
             np.set_printoptions(linewidth=np.inf)
@@ -71,19 +73,5 @@ if __name__ == '__main__':
 
 
             print("csv for " + str(folder) + " folder uploaded")
-            #number = 0
-            #_size = len(knownSnippets)
-            #with open("Clones" + str(folder), "w") as output:
-                #for i in range(_size):
-                    #number += 1
-                    #print(number, "/", _size)
-                    #for j in range(i + 1, _size):
-                        #try:
-                            #subs = knownSnippets[i][4] - knownSnippets[j][4]
-                            #score = np.matmul(subs, subs)
-                            #if score < 60:
-                                #print(knownSnippets[i][0], ",", knownSnippets[i][1], ",", knownSnippets[i][2], ",", knownSnippets[i][3], ",",
-                                     #knownSnippets[j][0], ",", knownSnippets[j][1], ",", knownSnippets[j][2], ",", knownSnippets[j][3], sep='', file=output)
-                        #except Exception:
-                            #pass
+
     model.close_session()

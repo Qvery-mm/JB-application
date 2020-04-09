@@ -26,10 +26,14 @@ double getDistance(double *a, double *b)
 
 int main()
 {
-    freopen("allClones", "w", stdout);
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    freopen("ClonesWithDistance", "w", stdout);
     int rows, cols=384;
-    for(int folder_ = 2; folder_ <= 44; folder_++)
+    for(int folder_ = 2; folder_ < 46; folder_++)
     {
+        if(folder_ == 16)
+            continue;
         string ss = "../data" + to_string(folder_) + ".csv";
         char cc[15];
         strcpy(cc, ss.c_str());
