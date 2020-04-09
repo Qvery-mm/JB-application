@@ -143,7 +143,7 @@ Now you'll see file named 'finalClones'
 ### import clones
 Go to the commands directory of BigCloneEval distribution and run: 
 ```
-./importClones -t 1 -c ../../JB-application/cpp/allClones
+./importClones -t 1 -c ../../JB-application/cpp/finalClones
 ```
 after importing run
 ```
