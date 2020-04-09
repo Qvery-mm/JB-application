@@ -26,12 +26,13 @@ pip3 install --upgrade pip
 pip3 install tensorflow==2.0.0-beta1
 ```
 
-### Step 1: Cloning this repository
+### Step 1: Get the lastest version of this repository
 ```
 go to your working directory. Let's call it $root$
 cd $root$
 git clone https://github.com/Qvery-mm/JB-application
 ```
+
 
 ### Step 2: Downloading a trained model (1.4 GB)
 Authors of tech-srl/code2vec already trained a model for 8 epochs on their own data.
