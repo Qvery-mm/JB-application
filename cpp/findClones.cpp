@@ -3,7 +3,7 @@
 using namespace std;
 
 const int COLS = 384;
-const double THERESHOLD = 60;
+const double THRESHOLD = 60;
 
 
 struct Snippet
@@ -61,7 +61,7 @@ int main()
                     subs = data[i].array[k] - data[j].array[k];
                     dist += subs * subs;
                 }
-                if(dist < THERESHOLD)
+                if(dist < THRESHOLD)
                 {
                     cout << data[i].folder << ',' << data[i].fname << ',' << data[i].lineStart << ',' << data[i].lineEnd << ',' <<
                             data[j].folder << ',' << data[j].fname << ',' << data[j].lineStart << ',' << data[j].lineEnd << ',' << dist << '\n' ;
