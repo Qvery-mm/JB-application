@@ -155,7 +155,7 @@ It will generate you report about your tool.
 
 My model found 72.547.615.152 pair of snippets and after computing distance there are 12724186 pairs of snippets, which distance less then 1 in their vector representation.
 Let's denote 12724186 by numPairs
-According report (see code2vec.report), model with fixed 1.0 
+According report (see report/code2vec.report), model with fixed 1.0 
 achieve following results:
 
      -- Recall Per Clone Type (type: numDetected / numClones = recall) --
@@ -176,7 +176,7 @@ achieve following results:
     
      Weakly Type-3/Type-4: 120 / 8219320 = 1.4599747911019404E-5
      
-     
+
 Clone type sense
 
     Type-1 - strick match token by token after Type-1 normalisation
