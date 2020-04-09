@@ -16,7 +16,7 @@ with open("finalClones", "w") as output:
         reader = csv.reader(csvfile, delimiter=',')
         for row in reader:
             row[8] = float(row[8])
-            if row[8] < threshold:
+            if row[8] <= threshold:
                 totalNumber+=1
                 print(','.join(row[:-1]), file=output)
         print(totalNumber)
