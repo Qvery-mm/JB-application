@@ -5,8 +5,8 @@ In this work I used code2vec model described in [1] and implemented in [2].
 
 The main idea of the vector representation is that code snippets with the same meaning will mapped to simular vectors (respect Euclidean metric).
 
-Then I specified threshold (in my case it is 7.75).
-If distance between vectors will be smaller thus I consider that they are clones.
+Then I specified threshold.
+If distance between vectors will be smalle, I consider that they are clones.
 
 
 ## Requirements
@@ -122,7 +122,7 @@ g++ findClones.cpp -o findClones
 ```
 
 It may take a while.
-If square distance between two vectors smaller than 60 (7.75^2), then I decide that ollowing snippets are clones.
+If square distance between two vectors smaller than 60, then I decide that following snippets may be clones.
 
 After that you'll see file named 'allClones'.
 It contain a large number of following lines:
@@ -130,7 +130,7 @@ It contain a large number of following lines:
 
 ### Model estimation
 
-#### import clones
+### import clones
 Go to the commands directory of BigCloneEval distribution and run: 
 ```
 ./importClones -t 1 -c ../../JB-application/cpp/allClones
@@ -141,8 +141,69 @@ after importing run
 ```
 It will generate you report about your tool.
 
+### Estimation of my model
 
-Metrics of my model still unavilable since long time of calculations.
+My model found 72.547.615.152 pair of snippets and after computing distance there are 12724186 pairs of snippets, which distance less then 1 in their vector representation.
+Let's denote 12724186 by numPairs
+According report (see code2vec.report), model with fixed 1.0 thereshold achieve following results:
+
+     -- Recall Per Clone Type (type: numDetected / numClones = recall) --
+
+     Type-1: 45540 / 47146 = 0.9659356042930471
+             
+     Type-2: 636 / 4609 = 0.13799088739422868
+              
+     Type-2 (blind): 174 / 386 = 0.45077720207253885
+      
+     Type-2 (consistent): 462 / 4223 = 0.10940089983424106
+ 
+     Very-Strongly Type-3: 2246 / 4163 = 0.5395147730002402
+
+     Strongly Type-3: 3049 / 16631 = 0.18333233118874392
+     
+     Moderatly Type-3: 316 / 83444 = 0.003786970902641292
+    
+     Weakly Type-3/Type-4: 120 / 8219320 = 1.4599747911019404E-5
+     
+     
+Clone type sense
+
+    Type-1 - strick match token by token after Type-1 normalisation
+    Type-2 - strick match token by token after Type-2 normalisation
+    Very-Strongly Type-3: Clone similarity in range [90,100) after pretty-printing and identifier/literal normalization.
+    Strongly Type-3: Clone similarity in range [70, 90) after pretty-printing and identifier/literal normalization.
+    Moderately Type-3: Clone similarity in range [50, 70) after pretty-printing and identifier/literal normalization.
+    Weakly Type-3/Type-4: Clone similarity in range [ 0, 50) after pretty-printing and identifier/literal normalization.     
+
+According definition of clone types, I decided do not track Moderately Type-3 and Weakly Type-3/Type-4 clones.
+Thus I may estimate my model.
+
+Recall = (SUM numDetected OVER all Types except last 2) / (SUM numClones OVER all Types except last 2)
+```
+Recall = 52107 / 77158 = 0.6753285466
+```
+
+Precision = numDetected / numPairs
+```
+Precision = 52107 / 12724186 = 0.0040951146
+```
+
+```
+F1 = 0.00814086
+```
+
+Increasing of threreshould may improve recall for Type 3 and Type 4 clones but it will also lead to dramatically low precision. For example for thereshold = 7.75 exists more 60.000.000.000 pairs of potential clones. In this case precision will be smaller than  10^-5.
+
+# What's next?
+
+It is clear, that current version of model has bad precision. There are some reasons for this.
+
+At first, I used fixed thereshold. Estimation may be better if thereshold will depend on size of snippet. Such improvement described in some related papers.
+
+Secondly, I should select small subset of dataset and use optimisation algorithm on it in order to find the best thereshold.
+
+Finally, it is possible to use more complex model in opposite simple pairwise comparing.
+
 
 # Citation
 
