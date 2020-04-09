@@ -89,7 +89,7 @@ cd commands
 Register tool
 
 ```
-./registerTool -n "code2vec" -d "60 threshold"
+./registerTool -n "code2vec" -d "1 threshold"
 ```
 
 
@@ -124,16 +124,26 @@ g++ findClones.cpp -o findClones
 It may take a while.
 If square distance between two vectors smaller than 60, then I decide that following snippets may be clones.
 
-After that you'll see file named 'allClones'.
+After that you'll see file named 'ClonesWithDistance'.
 It contain a large number of following lines:
-<dirname 1> <filename 1> <snippet line start 1> < snippet line end 1> <dirname 2> <filename 2> <snippet line start 2> < snippet line end 2>
+<dirname 1> <filename 1> <snippet line start 1> < snippet line end 1> <dirname 2> <filename 2> <snippet line start 2> < snippet line end 2> <square distance>
+
+After that you must run the script named select.py
+```
+python3 select.py
+```
+And specify desired threshold (but not greater then 7.75)
+
+I used =1
+
+Now you'll see file named 'finalClones'
 
 ### Model estimation
 
 ### import clones
 Go to the commands directory of BigCloneEval distribution and run: 
 ```
-./importClones -t 1 -c ../../JB-application/cpp/allClones
+./importClones -t 1 -c ../../JB-application/cpp/finalClones
 ```
 after importing run
 ```
@@ -145,7 +155,8 @@ It will generate you report about your tool.
 
 My model found 72.547.615.152 pair of snippets and after computing distance there are 12724186 pairs of snippets, which distance less then 1 in their vector representation.
 Let's denote 12724186 by numPairs
-According report (see code2vec.report), model with fixed 1.0 thereshold achieve following results:
+According report (see code2vec.report), model with fixed 1.0 
+achieve following results:
 
      -- Recall Per Clone Type (type: numDetected / numClones = recall) --
 
@@ -178,7 +189,7 @@ Clone type sense
 According definition of clone types, I decided do not track Moderately Type-3 and Weakly Type-3/Type-4 clones.
 Thus I may estimate my model.
 
-Recall = (SUM numDetected OVER all Types except last 2) / (SUM numClones OVER all Types except last 2)
+Recall = (sum 'numDetected' over all 'Types' except last 2) / (sum 'numClones' over all 'Types' except last 2)
 ```
 Recall = 52107 / 77158 = 0.6753285466
 ```
@@ -192,24 +203,23 @@ Precision = 52107 / 12724186 = 0.0040951146
 F1 = 0.00814086
 ```
 
-Increasing of threreshould may improve recall for Type 3 and Type 4 clones but it will also lead to dramatically low precision. For example for thereshold = 7.75 exists more 60.000.000.000 pairs of potential clones. In this case precision will be smaller than  10^-5.
+Increasing of threreshould may improve recall for Type 3 and Type 4 clones but it will also lead to dramatically low precision. For example for threshold = 7.75 exists more 60.000.000.000 pairs of potential clones. In this case precision will be smaller than  10^-5.
 
 # What's next?
 
 It is clear, that current version of model has bad precision. There are some reasons for this.
 
-At first, I used fixed thereshold. Estimation may be better if thereshold will depend on size of snippet. Such improvement described in some related papers.
+At first, I used fixed threshold. Estimation may be better if threshold will depend on size of snippet. Such improvement described in some related papers.
 
-Secondly, I should select small subset of dataset and use optimisation algorithm on it in order to find the best thereshold.
+Secondly, I should select small subset of dataset and use optimisation algorithm on it in order to find the best threshold.
 
 Finally, it is possible to use more complex model in opposite simple pairwise comparing.
 
 
 # Citation
 
-[1] [code2vec: Learning Distributed Representations of Code](https://urialon.cswp.cs.technion.ac.il/wp-content/uploads/sites/83/2018/12/code2vec-popl19.pdf)
-[2] github.com/tech-srl/code2vec
+[1] [code2vec: Learning Distributed Representations of Code](https://urialon.cswp.cs.technion.ac.il/wp-content/uploads/sites/83/2018/12/code2vec-popl19.pdf) github.com/tech-srl/code2vec
 
-[Uri Alon](http://urialon.cswp.cs.technion.ac.il), [Meital Zilberstein](http://www.cs.technion.ac.il/~mbs/), [Omer Levy](https://levyomer.wordpress.com) and [Eran Yahav](http://www.cs.technion.ac.il/~yahave/),
+[2] [Uri Alon](http://urialon.cswp.cs.technion.ac.il), [Meital Zilberstein](http://www.cs.technion.ac.il/~mbs/), [Omer Levy](https://levyomer.wordpress.com) and [Eran Yahav](http://www.cs.technion.ac.il/~yahave/),
 "code2vec: Learning Distributed Representations of Code", POPL'2019 [[PDF]](https://urialon.cswp.cs.technion.ac.il/wp-content/uploads/sites/83/2018/12/code2vec-popl19.pdf)
 
