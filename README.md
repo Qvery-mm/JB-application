@@ -155,9 +155,10 @@ It will generate you report about your tool.
 ### Estimation of my model
 
 My model found 72.547.615.152 pair of snippets and after computing distance there are 12724186 pairs of snippets, which distance less then 1 in their vector representation.
-Let's denote 12724186 by numPairs
-According report (see report/code2vec.report), model with fixed 1.0 
-achieve following results:
+
+Let's denote 12724186 by 'numPairs'.
+
+According report (see report/code2vec.report), model with fixed 1.0 threshold achieve following results:
 
      -- Recall Per Clone Type (type: numDetected / numClones = recall) --
 
@@ -180,15 +181,16 @@ achieve following results:
 
 Clone type sense
 
-    Type-1 - strick match token by token after Type-1 normalisation
-    Type-2 - strick match token by token after Type-2 normalisation
+    Type-1 - strict match token by token after Type-1 normalisation
+    Type-2 - strict match token by token after Type-2 normalisation
     Very-Strongly Type-3: Clone similarity in range [90,100) after pretty-printing and identifier/literal normalization.
     Strongly Type-3: Clone similarity in range [70, 90) after pretty-printing and identifier/literal normalization.
     Moderately Type-3: Clone similarity in range [50, 70) after pretty-printing and identifier/literal normalization.
     Weakly Type-3/Type-4: Clone similarity in range [ 0, 50) after pretty-printing and identifier/literal normalization.     
 
 According definition of clone types, I decided do not track Moderately Type-3 and Weakly Type-3/Type-4 clones.
-Thus I may estimate my model.
+
+Now I may estimate my model.
 
 Recall = (sum 'numDetected' over all 'Types' except last 2) / (sum 'numClones' over all 'Types' except last 2)
 ```
@@ -204,11 +206,13 @@ Precision = 52107 / 12724186 = 0.0040951146
 F1 = 0.00814086
 ```
 
-Increasing of threreshould may improve recall for Type 3 and Type 4 clones but it will also lead to dramatically low precision. For example for threshold = 7.75 exists more 60.000.000.000 pairs of potential clones. In this case precision will be smaller than  10^-5.
+Increasing of threreshould may improve recall for Type 3 and Type 4 clones but it will also lead to dramatically low precision. 
+
+For example there exists more 60.000.000.000 pairs of potential clones for threshold = 7.75. In this case precision will be smaller than  10^-5.
 
 # What's next?
 
-It is clear, that current version of model has bad precision. There are some reasons for this.
+It is clear that current version of model has bad precision. There are several ways to improve it.
 
 At first, I used fixed threshold. Estimation may be better if threshold will depend on size of snippet. Such improvement described in some related papers.
 
